@@ -32,51 +32,54 @@ def get_image(path):
 # Parametros para treinar a rede em transfer-learning
 
 PERCENTUAL_DA_AMOSTRA = 0.20
+BAIXAR_IMAGENS = True
 
 # *****************************************************************************
 # *** Running in windows
 # *****************************************************************************
 
 # Images - download when running in windows
+cwd = os.getcwd()
 
-# url = 'https://download.microsoft.com/download/3/E/1/3E1C3F21-ECDB-4869-8368-6DEBA77B919F/kagglecatsanddogs_5340.zip'
-# response = requests.get(url)
+if os.name == 'nt' and BAIXAR_IMAGENS:
+    url = 'https://download.microsoft.com/download/3/E/1/3E1C3F21-ECDB-4869-8368-6DEBA77B919F/kagglecatsanddogs_5340.zip'
+    response = requests.get(url)
 
-# with open('kagglecatsanddogs_5340.zip', 'wb') as file:
-#    file.write(response.content)
+    with open('kagglecatsanddogs_5340.zip', 'wb') as file:
+        file.write(response.content)
 
-# with zipfile.ZipFile("kagglecatsanddogs_5340.zip","r") as zip_ref:
-#     zip_ref.extractall(cwd)
+    with zipfile.ZipFile("kagglecatsanddogs_5340.zip","r") as zip_ref:
+        zip_ref.extractall(cwd)
+    #
+    # Exclude files that will not be used anymore in windoes
+    #
+    
+    fullPath = cwd + "\\kagglecatsanddogs_5340.zip"
+
+    if os.path.exists(fullPath):
+        os.remove(cwd + "\\kagglecatsanddogs_5340.zip")
+        os.remove(cwd + "\\readme[1].txt")
+        os.remove(cwd + "\\CDLA-Permissive-2.0.pdf")
 
 # *****************************************************************************
 # *** Running in colab
 # *****************************************************************************
 
+
 # images - download when running in colab
 # IMAGES TO DOWNLOAD FOR THE TRANSFER LEARNING CHALLANGE 01
-#!echo ""
-#!curl -L -o 101_ObjectCategories.tar.gz --progress-bar https://download.microsoft.com/download/3/E/1/3E1C3F21-ECDB-4869-8368-6DEBA77B919F/kagglecatsanddogs_5340.zip
-# !unzip 101_ObjectCategories.tar.gz
+
+if os.name != 'nt' and BAIXAR_IMAGENS:
+    !echo ""
+    !curl -L -o 101_ObjectCategories.tar.gz --progress-bar https://download.microsoft.com/download/3/E/1/3E1C3F21-ECDB-4869-8368-6DEBA77B919F/kagglecatsanddogs_5340.zip
+    !unzip 101_ObjectCategories.tar.gz
 
 # To exclude files and folders not necessary in colab
 
-# !rm 101_ObjectCategories.tar.gz
-# #!rm redme[1].txt
-# !rm CDLA-Permissive-2.0.pdf
-# !ls
-
-
-
-#
-# Exclude files that will not be used anymore in windoes
-#
-cwd = os.getcwd()
-fullPath = cwd + "\\kagglecatsanddogs_5340.zip"
-
-if os.path.exists(fullPath):
-    os.remove(cwd + "\\kagglecatsanddogs_5340.zip")
-    os.remove(cwd + "\\readme[1].txt")
-    os.remove(cwd + "\\CDLA-Permissive-2.0.pdf")
+    !rm 101_ObjectCategories.tar.gz
+    #!rm redme[1].txt
+    !rm CDLA-Permissive-2.0.pdf
+    !ls
 
 # *******************************************************
 # CATEGORIES SELECTION FOR TRAINNING THE CNN
@@ -137,8 +140,6 @@ train = data[:idx_val]
 val = data[idx_val:idx_test]
 test = data[idx_test:]
 
-# separate data for labels (deu erro aqui). Não foi
-# possível alocar 2.1GB para o array
 
 x_train, y_train = np.array([t["x"] for t in train]), [t["y"] for t in train]
 x_val, y_val = np.array([t["x"] for t in val]), [t["y"] for t in val]
@@ -314,3 +315,10 @@ ax2.set_xlabel("epochs")
 ax2.set_ylim(0, 1)
 
 plt.show()
+
+#validation test
+
+loss, accuracy = model_new.evaluate(x_test, y_test, verbose=0)
+
+print('Test loss:', loss)
+print('Test accuracy:', accuracy)

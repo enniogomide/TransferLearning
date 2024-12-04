@@ -1,4 +1,4 @@
-# **CNN - Convulational Neural Network**
+# **CNN - Convolution Neural Network**
 ## *Transfer learning / fine-tuning*
 
 ## **Description**
