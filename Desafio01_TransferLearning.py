@@ -33,8 +33,11 @@ def get_image(path):
 
 PERCENTUAL_DA_AMOSTRA = 0.20
 
+# *****************************************************************************
+# *** Running in windows
+# *****************************************************************************
 
-# Images
+# Images - download when running in windows
 
 # url = 'https://download.microsoft.com/download/3/E/1/3E1C3F21-ECDB-4869-8368-6DEBA77B919F/kagglecatsanddogs_5340.zip'
 # response = requests.get(url)
@@ -42,13 +45,32 @@ PERCENTUAL_DA_AMOSTRA = 0.20
 # with open('kagglecatsanddogs_5340.zip', 'wb') as file:
 #    file.write(response.content)
 
-cwd = os.getcwd()
 # with zipfile.ZipFile("kagglecatsanddogs_5340.zip","r") as zip_ref:
 #     zip_ref.extractall(cwd)
 
+# *****************************************************************************
+# *** Running in colab
+# *****************************************************************************
+
+# images - download when running in colab
+# IMAGES TO DOWNLOAD FOR THE TRANSFER LEARNING CHALLANGE 01
+#!echo ""
+#!curl -L -o 101_ObjectCategories.tar.gz --progress-bar https://download.microsoft.com/download/3/E/1/3E1C3F21-ECDB-4869-8368-6DEBA77B919F/kagglecatsanddogs_5340.zip
+# !unzip 101_ObjectCategories.tar.gz
+
+# To exclude files and folders not necessary in colab
+
+# !rm 101_ObjectCategories.tar.gz
+# #!rm redme[1].txt
+# !rm CDLA-Permissive-2.0.pdf
+# !ls
+
+
+
 #
-# Exclude files that will not be used anymore
+# Exclude files that will not be used anymore in windoes
 #
+cwd = os.getcwd()
 fullPath = cwd + "\\kagglecatsanddogs_5340.zip"
 
 if os.path.exists(fullPath):
