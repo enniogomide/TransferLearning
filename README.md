@@ -74,3 +74,6 @@ Model: "functional_20"
 
 Execution time: 169m22.2s
 
+Test loss: 0.23198756575584412
+Test accuracy: 0.9026666879653931
+
